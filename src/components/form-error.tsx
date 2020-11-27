@@ -28,18 +28,18 @@ const FormError: React.FC<FormErrorProps> = (props) => {
   const { errors, name, clearErrors, CloseIcon, ErrorWrapper } = props;
   const clearFieldError = () => clearErrors(name, { exact: false });
   return (
-    <ErrorWrapper>
-      <DefaultErrorMessage
-        errors={errors}
-        name={name}
-        render={({ message }) => (
+    <DefaultErrorMessage
+      errors={errors}
+      name={name}
+      render={({ message }) => (
+        <ErrorWrapper>
           <View style={styles.row}>
             <Text style={styles.errorText}>{message}</Text>
             <CloseIcon onPress={clearFieldError} />
           </View>
-        )}
-      />
-    </ErrorWrapper>
+        </ErrorWrapper>
+      )}
+    />
   );
 };
 
