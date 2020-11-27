@@ -7,6 +7,7 @@ interface FormErrorProps {
   name: string;
   clearErrors: any;
   CloseIcon: React.FC<{ onPress: () => void }>;
+  ErrorWrapper: React.FC;
 }
 
 const styles = StyleSheet.create({
@@ -24,19 +25,21 @@ const styles = StyleSheet.create({
 });
 
 const FormError: React.FC<FormErrorProps> = (props) => {
-  const { errors, name, clearErrors, CloseIcon } = props;
+  const { errors, name, clearErrors, CloseIcon, ErrorWrapper } = props;
   const clearFieldError = () => clearErrors(name, { exact: false });
   return (
-    <DefaultErrorMessage
-      errors={errors}
-      name={name}
-      render={({ message }) => (
-        <View style={styles.row}>
-          <Text style={styles.errorText}>{message}</Text>
-          <CloseIcon onPress={clearFieldError} />
-        </View>
-      )}
-    />
+    <ErrorWrapper>
+      <DefaultErrorMessage
+        errors={errors}
+        name={name}
+        render={({ message }) => (
+          <View style={styles.row}>
+            <Text style={styles.errorText}>{message}</Text>
+            <CloseIcon onPress={clearFieldError} />
+          </View>
+        )}
+      />
+    </ErrorWrapper>
   );
 };
 
