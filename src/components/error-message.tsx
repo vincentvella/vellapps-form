@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ErrorMessage as DefaultErrorMessage } from '@hookform/error-message';
-import { Text } from 'react-native-paper';
+import { Text } from 'react-native';
 
 interface ErrorMessageProps {
   errors: any;

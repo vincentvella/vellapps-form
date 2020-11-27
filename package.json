@@ -2,10 +2,10 @@
   "name": "@vellapps/form",
   "version": "0.1.0",
   "description": "Form components and utilities used for building forms",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
-  "react-native": "src/index",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index.ts",
   "source": "src/index",
   "files": [
     "src",
@@ -137,7 +137,6 @@
     "@hookform/error-message": "^0.0.5",
     "@hookform/resolvers": "0.1.0",
     "react-hook-form": "^6.11.5",
-    "react-native-paper": "^4.4.1",
     "yup": "^0.31.0"
   }
 }

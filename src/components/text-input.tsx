@@ -1,150 +1,42 @@
 import * as React from 'react';
-import { Controller } from 'react-hook-form';
-import { TextInput as RNPaperTextInput } from 'react-native-paper';
-import type { TextInputProps } from 'react-native-paper/lib/typescript/src/components/TextInput/TextInput';
-import type { Theme } from 'react-native-paper/lib/typescript/src/types';
-
-type TextFieldProp = Pick<
+import {
+  Text,
+  TextInput as RNTextInput,
   TextInputProps,
-  | 'label'
-  | 'style'
-  | 'allowFontScaling'
-  | 'ref'
-  | 'numberOfLines'
-  | 'onLayout'
-  | 'testID'
-  | 'nativeID'
-  | 'maxFontSizeMultiplier'
-  | 'selectionColor'
-  | 'textBreakStrategy'
-  | 'accessible'
-  | 'accessibilityLabel'
-  | 'accessibilityRole'
-  | 'accessibilityHint'
-  | 'accessibilityComponentType'
-  | 'accessibilityLiveRegion'
-  | 'importantForAccessibility'
-  | 'accessibilityElementsHidden'
-  | 'accessibilityTraits'
-  | 'onAccessibilityTap'
-  | 'onMagicTap'
-  | 'accessibilityIgnoresInvertColors'
-  | 'disabled'
-  | 'key'
-  | 'hitSlop'
-  | 'pointerEvents'
-  | 'removeClippedSubviews'
-  | 'collapsable'
-  | 'needsOffscreenAlphaCompositing'
-  | 'renderToHardwareTextureAndroid'
-  | 'accessibilityViewIsModal'
-  | 'accessibilityActions'
-  | 'onAccessibilityAction'
-  | 'shouldRasterizeIOS'
-  | 'isTVSelectable'
-  | 'hasTVPreferredFocus'
-  | 'tvParallaxProperties'
-  | 'tvParallaxShiftDistanceX'
-  | 'tvParallaxShiftDistanceY'
-  | 'tvParallaxTiltAngle'
-  | 'tvParallaxMagnification'
-  | 'onStartShouldSetResponder'
-  | 'onMoveShouldSetResponder'
-  | 'onResponderEnd'
-  | 'onResponderGrant'
-  | 'onResponderReject'
-  | 'onResponderMove'
-  | 'onResponderRelease'
-  | 'onResponderStart'
-  | 'onResponderTerminationRequest'
-  | 'onResponderTerminate'
-  | 'onStartShouldSetResponderCapture'
-  | 'onMoveShouldSetResponderCapture'
-  | 'onTouchStart'
-  | 'onTouchMove'
-  | 'onTouchEnd'
-  | 'onTouchCancel'
-  | 'onTouchEndCapture'
-  | 'render'
-  | 'onBlur'
-  | 'onFocus'
-  | 'multiline'
-  | 'mode'
-  | 'error'
-  | 'placeholder'
-  | 'autoCapitalize'
-  | 'autoCorrect'
-  | 'autoFocus'
-  | 'blurOnSubmit'
-  | 'caretHidden'
-  | 'contextMenuHidden'
-  | 'defaultValue'
-  | 'editable'
-  | 'keyboardType'
-  | 'maxLength'
-  | 'onChange'
-  | 'onChangeText'
-  | 'onContentSizeChange'
-  | 'onEndEditing'
-  | 'onSelectionChange'
-  | 'onSubmitEditing'
-  | 'onScroll'
-  | 'onKeyPress'
-  | 'placeholderTextColor'
-  | 'returnKeyType'
-  | 'secureTextEntry'
-  | 'selectTextOnFocus'
-  | 'selection'
-  | 'inputAccessoryViewID'
-  | 'value'
-  | 'clearButtonMode'
-  | 'clearTextOnFocus'
-  | 'dataDetectorTypes'
-  | 'enablesReturnKeyAutomatically'
-  | 'keyboardAppearance'
-  | 'selectionState'
-  | 'spellCheck'
-  | 'textContentType'
-  | 'scrollEnabled'
-  | 'autoCompleteType'
-  | 'disableFullscreenUI'
-  | 'inlineImageLeft'
-  | 'inlineImagePadding'
-  | 'returnKeyLabel'
-  | 'underlineColorAndroid'
-  | 'textAlignVertical'
-  | 'dense'
-> & {
-  theme?:
-    | import('@callstack/react-theme-provider').$DeepPartial<Theme>
-    | undefined;
-};
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
+import { Controller } from 'react-hook-form';
 
-export interface TextFieldProps extends TextFieldProp {
+export interface TextFieldProps extends TextInputProps {
   name: string;
   label: string;
   type?: string;
   underlineColor?: string;
   control: any;
   required?: boolean;
+  labelStyle?: TextStyle;
+  containerStyle?: ViewStyle;
 }
 
 const TextInput = React.forwardRef<any, TextFieldProps>(
   (
-    { control, name, required, label, ...props },
+    { control, name, required, label, labelStyle, containerStyle, ...props },
     forwardedRef: React.Ref<any>
   ) => (
     <Controller
       control={control}
       render={({ onChange, ...hookProps }) => (
-        <RNPaperTextInput
-          mode="outlined"
-          label={required ? `${label}*` : label}
-          {...props}
-          {...hookProps}
-          onChangeText={onChange}
-          ref={forwardedRef}
-        />
+        <View style={containerStyle}>
+          <Text style={labelStyle}>{required ? `${label}*` : label}</Text>
+          <RNTextInput
+            {...props}
+            {...hookProps}
+            ref={forwardedRef}
+            onChangeText={onChange}
+          />
+        </View>
       )}
       name={name}
     />
