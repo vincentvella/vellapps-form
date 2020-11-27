@@ -10,26 +10,6 @@ To get started with the project, run `yarn bootstrap` in the root directory to i
 yarn bootstrap
 ```
 
-While developing, you can run the [example app](/example/) to test your changes.
-
-To start the packager:
-
-```sh
-yarn example start
-```
-
-To run the example app on Android:
-
-```sh
-yarn example android
-```
-
-To run the example app on iOS:
-
-```sh
-yarn example ios
-```
-
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
 ```sh
@@ -48,10 +28,6 @@ Remember to add tests for your change if possible. Run the unit tests by:
 ```sh
 yarn test
 ```
-
-To edit the Objective-C files, open `example/ios/FormExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > @vellapps/form`.
-
-To edit the Kotlin files, open `example/android` in Android studio and find the source files at `vellappsform` under `Android`.
 
 ### Commit message convention
 
@@ -82,9 +58,6 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn typescript`: type-check files with TypeScript.
 - `yarn lint`: lint files with ESLint.
 - `yarn test`: run unit tests with Jest.
-- `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
 
 ### Sending a pull request
 

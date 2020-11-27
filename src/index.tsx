@@ -1,5 +1,6 @@
-export default {
-  multiply(a: number, b: number) {
-    return Promise.resolve(a * b);
-  },
-};
+export { nextInputFocus } from './lib/focus';
+export { yupResolver as resolver } from '@hookform/resolvers';
+export { default as ErrorMessage } from './components/error-message';
+export { default as FormError } from './components/form-error';
+export { default as TextInput } from './components/text-input';
+export * as Yup from 'yup';
