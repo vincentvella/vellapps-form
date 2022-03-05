@@ -1,6 +1,6 @@
 {
   "name": "@vellapps/form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Form components and utilities used for building forms",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
