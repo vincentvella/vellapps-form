@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  StyleSheet,
   Text,
   TextInput as RNTextInput,
   TextInputProps,
@@ -8,6 +9,10 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Controller } from 'react-hook-form';
+
+const styles = StyleSheet.create({
+  errorMessage: { paddingLeft: 10 },
+});
 
 export interface TextFieldProps extends TextInputProps {
   name: string;
@@ -18,18 +23,32 @@ export interface TextFieldProps extends TextInputProps {
   required?: boolean;
   labelStyle?: TextStyle;
   errorMessageStyle?: TextStyle;
-  showError?: false
+  showError?: false;
   containerStyle?: ViewStyle;
 }
 
 const TextInput = React.forwardRef<any, TextFieldProps>(
   (
-    { control, name, required, label, labelStyle, containerStyle, errorMessageStyle, showError = true, ...props },
+    {
+      control,
+      name,
+      required,
+      label,
+      labelStyle,
+      containerStyle,
+      errorMessageStyle,
+      showError = true,
+      ...props
+    },
     forwardedRef: React.Ref<any>
   ) => (
     <Controller
       control={control}
-      render={({ field: { onChange, onBlur, value }, fieldState: { error }, ...hookProps }) => (
+      render={({
+        field: { onChange, onBlur, value },
+        fieldState: { error },
+        ...hookProps
+      }) => (
         <>
           <View style={containerStyle}>
             <Text style={labelStyle}>{required ? `${label}*` : label}</Text>
@@ -43,7 +62,9 @@ const TextInput = React.forwardRef<any, TextFieldProps>(
             />
           </View>
           {showError && error?.message && (
-            <Text style={[{ paddingLeft: 10 }, errorMessageStyle]}>{error.message}</Text>
+            <Text style={[styles.errorMessage, errorMessageStyle]}>
+              {error.message}
+            </Text>
           )}
         </>
       )}
