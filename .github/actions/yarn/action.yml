@@ -1,0 +1,29 @@
+name: Setup Node and Install Dependencies
+inputs:
+  node-version:
+    description: Node version
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Set Cache Folder
+      id: yarn-cache-dir-path
+      shell: bash
+      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    - name: Check for Cache Hit
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: yarn-${{ hashFiles('package.json') }}
+        restore-keys: |
+          yarn-
+
+    - name: Install Dependencies
+      shell: sh
+      run: yarn install --immutable --frozen-lockfile --force --non-interactive

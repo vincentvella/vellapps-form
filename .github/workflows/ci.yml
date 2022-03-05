@@ -1,0 +1,132 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  install:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    needs: install
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Lint Project
+        run: yarn lint
+
+  typescript:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    needs: install
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Check typescript
+        run: yarn typescript
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    needs: install
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Check typescript
+        run: yarn typescript
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    needs: install
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Check typescript
+        run: yarn prepare
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          # Give a unique name to your artifacts so they can be easily retrieved
+          name: build-output
+          # This example is based of a Next.JS build output, thus the .next path.
+          # The path might need to be changed based on your build settings or the framework your team is using.
+          path: lib
+
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16]
+    needs:
+      - build
+      - unit-tests
+      - typescript
+      - lint
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Setup Yarn
+        uses: ./.github/actions/yarn
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          # Specify the path in which you wish to place your artiface.
+          # Here I restore them in the .next folder since it's necessary to run the next start command later on
+          path: lib
+
+      - name: Publish if version has been updated
+        uses: pascalgn/npm-publish-action@1.3.8
+        with: # All of theses inputs are optional
+          tag_name: 'v%s'
+          tag_message: 'v%s'
+          create_tag: 'true'
+          commit_pattern: "^Release (\\S+)"
+          workspace: '.'
+          publish_command: 'yarn'
+          publish_args: '--non-interactive'
+        env: # More info about the environment variables in the README
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings

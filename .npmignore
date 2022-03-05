@@ -1,0 +1,12 @@
+.github
+.vscode
+__tests__/
+__fixtures__/
+__mocks__/
+.editorconfig
+.gitignore
+.huskyrc
+babel.config.js
+*.md
+LICENSE
+tsconfig.json
