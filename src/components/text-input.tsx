@@ -17,26 +17,35 @@ export interface TextFieldProps extends TextInputProps {
   control: any;
   required?: boolean;
   labelStyle?: TextStyle;
+  errorMessageStyle?: TextStyle;
+  showError?: false
   containerStyle?: ViewStyle;
 }
 
 const TextInput = React.forwardRef<any, TextFieldProps>(
   (
-    { control, name, required, label, labelStyle, containerStyle, ...props },
+    { control, name, required, label, labelStyle, containerStyle, errorMessageStyle, showError = true, ...props },
     forwardedRef: React.Ref<any>
   ) => (
     <Controller
       control={control}
-      render={({ onChange, ...hookProps }) => (
-        <View style={containerStyle}>
-          <Text style={labelStyle}>{required ? `${label}*` : label}</Text>
-          <RNTextInput
-            {...props}
-            {...hookProps}
-            ref={forwardedRef}
-            onChangeText={onChange}
-          />
-        </View>
+      render={({ field: { onChange, onBlur, value }, fieldState: { error }, ...hookProps }) => (
+        <>
+          <View style={containerStyle}>
+            <Text style={labelStyle}>{required ? `${label}*` : label}</Text>
+            <RNTextInput
+              {...props}
+              {...hookProps}
+              ref={forwardedRef}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          </View>
+          {showError && error?.message && (
+            <Text style={[{ paddingLeft: 10 }, errorMessageStyle]}>{error.message}</Text>
+          )}
+        </>
       )}
       name={name}
     />
